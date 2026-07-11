@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+.python-version
+
+# Environment variables
+.env
+.env.*
+
+# SQLite database files
+app.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads and temp files
+app/uploads/
+uploads/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

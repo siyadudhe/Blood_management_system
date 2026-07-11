@@ -7,8 +7,9 @@ from flask_wtf.csrf import CSRFProtect
 from flask_mail import Mail
 from dotenv import load_dotenv
 
-load_dotenv()
-
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 app_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,12 +22,15 @@ mail = Mail()
 
 
 def create_app(config_name: str | None = None) -> Flask:
+    config_name = config_name or os.environ.get("FLASK_CONFIG", "production")
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object("config.DevelopmentConfig")
+
     if config_name == "production":
         app.config.from_object("config.ProductionConfig")
     elif config_name == "testing":
         app.config.from_object("config.TestingConfig")
+    else:
+        app.config.from_object("config.DevelopmentConfig")
 
     app.config.setdefault("SQLALCHEMY_DATABASE_URI", app.config.get("SQLALCHEMY_DATABASE_URI"))
     app.config.setdefault("UPLOAD_FOLDER", os.path.join(app.root_path, "uploads"))

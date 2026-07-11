@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
 from app import db
 from app.models.models import User, UserRole, Donor, Donation, BloodUnit, Hospital, BloodRequest
@@ -32,9 +32,11 @@ def profile():
         current_user.address = form.address.data
         if form.profile_picture.data:
             filename = secure_filename(form.profile_picture.data.filename)
-            path = os.path.join(current_user.id, filename)
-            os.makedirs(os.path.dirname(os.path.join("app/uploads", path)), exist_ok=True)
-            form.profile_picture.data.save(os.path.join("app/uploads", path))
+            upload_folder = current_app.config["UPLOAD_FOLDER"]
+            path = os.path.join(str(current_user.id), filename)
+            full_path = os.path.join(upload_folder, path)
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
+            form.profile_picture.data.save(full_path)
             current_user.profile_picture = path
         db.session.commit()
         flash("Profile updated", "success")
