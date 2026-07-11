@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Ledger | Hospital Request Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9f9",
+                    "inverse-primary": "#ffb3ac",
+                    "on-primary-fixed-variant": "#930010",
+                    "secondary-fixed-dim": "#a5c8ff",
+                    "secondary-container": "#54a0fe",
+                    "on-primary-fixed": "#410003",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f9f9f9",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#ffb3ac",
+                    "surface-tint": "#ba1a20",
+                    "secondary-fixed": "#d4e3ff",
+                    "tertiary-fixed-dim": "#82db7e",
+                    "primary": "#af101a",
+                    "on-primary-container": "#fff2f0",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-tertiary-fixed": "#002204",
+                    "surface-dim": "#dadada",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#e4beba",
+                    "inverse-surface": "#2f3131",
+                    "secondary": "#005faf",
+                    "outline": "#8f6f6c",
+                    "on-tertiary-fixed-variant": "#005312",
+                    "surface-container-high": "#e8e8e8",
+                    "on-tertiary-container": "#daffd1",
+                    "tertiary-container": "#298030",
+                    "on-surface": "#1a1c1c",
+                    "on-surface-variant": "#5b403d",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#016619",
+                    "primary-container": "#d32f2f",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#001c3a",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f3f3",
+                    "on-background": "#1a1c1c",
+                    "surface-variant": "#e2e2e2",
+                    "inverse-on-surface": "#f1f1f1",
+                    "primary-fixed": "#ffdad6",
+                    "surface": "#f9f9f9",
+                    "surface-container": "#eeeeee",
+                    "on-secondary-container": "#003567",
+                    "tertiary-fixed": "#9df898",
+                    "surface-container-highest": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "data-tabular": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
+            color: #1a1c1c;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #af101a;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .emergency-pulse {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(175, 16, 26, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(175, 16, 26, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(175, 16, 26, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 bg-surface-container-lowest shadow-sm z-50 flex flex-col border-r border-outline-variant">
+<div class="p-6 flex flex-col gap-1">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Vital Ledger</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Blood Bank Management</p>
+</div>
+<nav class="flex-1 mt-4">
+<a class="flex items-center gap-3 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-3 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md" href="#">
+<span class="material-symbols-outlined">bloodtype</span> Inventory
+            </a>
+<a class="flex items-center gap-3 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md" href="#">
+<span class="material-symbols-outlined">person_add</span> Donors
+            </a>
+<a class="flex items-center gap-3 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md" href="#">
+<span class="material-symbols-outlined">diversity_1</span> Recipients
+            </a>
+<!-- Active Tab: Hospitals -->
+<a class="flex items-center gap-3 py-3 px-6 text-primary font-bold border-l-4 border-primary bg-surface-container-low font-body-md transition-all duration-200" href="#">
+<span class="material-symbols-outlined">local_hospital</span> Hospitals
+            </a>
+<a class="flex items-center gap-3 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-md" href="#">
+<span class="material-symbols-outlined">bar_chart</span> Reports
+            </a>
+</nav>
+<div class="p-4 border-t border-outline-variant flex flex-col gap-1">
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span> Admin Settings
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">account_circle</span> Profile
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-primary hover:bg-primary-container hover:text-on-primary-container transition-colors font-label-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">logout</span> Logout
+            </a>
+</div>
+</aside>
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface-bright border-b border-outline-variant z-40 flex justify-between items-center px-gutter">
+<div class="flex items-center flex-1 max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 font-body-sm text-on-surface" placeholder="Search requests, hospitals, or blood types..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full border-2 border-surface-bright"></span>
+</button>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-on-surface">St. Jude Medical</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Hospital Partner</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container overflow-hidden border border-outline-variant group-hover:scale-105 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a hospital administrator in a clean, modern medical setting. The person is wearing a white coat over a blue shirt, smiling confidently. The background is a soft-focus laboratory or hospital office with cool lighting and minimalist decor, emphasizing trust and healthcare expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8iepL781mKNyaB3Pd5GOGsR-s_kdnzJLWBHWkBE1enK2gh1lSyZHo9APNbhZttRW-9E4XifqehQo1ar4uIjDe-1zG1mrax7vwYjPhCYdXT-fwIDw5QecOexrdUID-QuB-EtITEcZI0wN591jRivYqBr6dWdMbGD_mE-YSz3amjO-YUHt7zhfz1Mo8faxVGaxyrxwIaL5J1sKPkxWsY9GN8-0Da5YakJMy3KFWBW7W_4GDAU29rS42TQ"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar-width pt-16 min-h-screen">
+<div class="p-gutter max-w-container-max mx-auto">
+<!-- Header Section -->
+<div class="mb-xl flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Recipient Request Portal</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl">Manage urgent blood requests, track real-time logistics, and monitor inventory levels for St. Jude Medical Center.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md flex items-center gap-2 hover:bg-primary-container transition-all active:scale-95 shadow-md" onclick="document.getElementById('requestModal').classList.remove('hidden')">
+<span class="material-symbols-outlined">add_circle</span> NEW REQUEST
+                </button>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Left Column: Search & Live Inventory -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-lg">
+<!-- Blood Availability Search Bento -->
+<section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span> Live Inventory Search
+                            </h3>
+<span class="font-label-md text-tertiary flex items-center gap-1 bg-tertiary-fixed/20 px-3 py-1 rounded-full">
+<span class="w-2 h-2 bg-tertiary rounded-full animate-pulse"></span> SYSTEM ONLINE
+                            </span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md mb-6">
+<!-- Blood Type Quick Stats -->
+<div class="p-4 rounded-lg bg-surface-container border border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<p class="font-label-md text-on-surface-variant">A-POSITIVE</p>
+<div class="flex items-end justify-between mt-1">
+<span class="font-headline-md text-headline-md">42 <span class="text-xs font-normal text-on-surface-variant">units</span></span>
+<span class="text-tertiary font-label-md">Stable</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<p class="font-label-md text-on-surface-variant text-primary font-bold">O-NEGATIVE</p>
+<div class="flex items-end justify-between mt-1">
+<span class="font-headline-md text-headline-md text-primary">08 <span class="text-xs font-normal text-on-surface-variant">units</span></span>
+<span class="text-error font-label-md">Low</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<p class="font-label-md text-on-surface-variant">B-POSITIVE</p>
+<div class="flex items-end justify-between mt-1">
+<span class="font-headline-md text-headline-md">112 <span class="text-xs font-normal text-on-surface-variant">units</span></span>
+<span class="text-tertiary font-label-md">Surplus</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-surface-container border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<p class="font-label-md text-on-surface-variant">AB-POSITIVE</p>
+<div class="flex items-end justify-between mt-1">
+<span class="font-headline-md text-headline-md">15 <span class="text-xs font-normal text-on-surface-variant">units</span></span>
+<span class="text-tertiary font-label-md">Stable</span>
+</div>
+</div>
+</div>
+<div class="relative overflow-hidden rounded-xl h-64 bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist 3D visualization of a global supply chain or network. It uses a high-contrast palette of white and deep red. Abstract nodes representing hospitals and blood banks are connected by glowing red lines of light. The scene is bright with soft ambient shadows, emphasizing precision, technology, and sterile professional design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgR9yqDrsFOLhdscuxRluktRU8245BJ-tNc3jtb0H0IHRpiz4HPJe4XLnCPPvoNIRIVfKRaAlZuMVrXD8ArMs0YJXWdUhb3rtz_vJHA7jFQP-Ge68KmLeNGW09kShb6b7NtA1qTIXPi3prP_KZbpuFN5m1TKoPlAZR0ve0ma7mXQYe_uul2voVSctOdpVbbJeHdMPNk2V7on04C8F_scRzlUSfbk-oACYQW2YthyEixsdBSwowllC-gA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-on-surface/50 to-transparent flex items-end p-6">
+<div class="glass-card p-4 rounded-lg flex items-center gap-4 w-full">
+<div class="flex-1">
+<p class="font-label-md text-on-surface">Nearest Dispatch Hub</p>
+<p class="font-body-sm text-on-surface-variant">Regional Central Lab (4.2km away)</p>
+</div>
+<button class="bg-on-surface text-surface-bright px-4 py-2 rounded font-label-md hover:bg-primary transition-colors">ESTIMATE TIME</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Request Tracking List -->
+<section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md">Active Requests</h3>
+<button class="text-primary font-label-md flex items-center gap-1 hover:underline">View All <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span></button>
+</div>
+<div class="space-y-4">
+<!-- Tracking Card 1: Emergency -->
+<div class="p-4 rounded-lg border-2 border-primary bg-primary/5 flex items-center gap-6">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary emergency-pulse">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 bg-primary text-on-primary text-[10px] font-bold rounded uppercase">Emergency</span>
+<h4 class="font-body-md font-bold">O- (4 Units)</h4>
+</div>
+<p class="text-xs text-on-surface-variant">Patient ID: #HOSP-9921 | ER Dept.</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-primary animate-pulse">IN-TRANSIT</p>
+<p class="text-[10px] text-on-surface-variant">ETA: 8 mins</p>
+</div>
+<div class="w-16 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[75%]"></div>
+</div>
+</div>
+<!-- Tracking Card 2: Normal -->
+<div class="p-4 rounded-lg border border-outline-variant bg-surface-container-low flex items-center gap-6">
+<div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-on-secondary">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded uppercase">Normal</span>
+<h4 class="font-body-md font-bold">A+ (2 Units)</h4>
+</div>
+<p class="text-xs text-on-surface-variant">Patient ID: #HOSP-8810 | Surgery Wing</p>
+</div>
+<div class="text-right">
+<p class="font-label-md text-on-surface-variant">PENDING</p>
+<p class="text-[10px] text-on-surface-variant">Queue: #3</p>
+</div>
+<div class="w-16 h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[20%]"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: History & Stats -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<!-- Summary Stats -->
+<div class="bg-on-surface text-surface-bright p-6 rounded-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<p class="font-label-md opacity-70">Requests This Month</p>
+<h3 class="font-display-lg text-display-lg my-2">184</h3>
+<div class="flex items-center gap-2 text-tertiary-fixed">
+<span class="material-symbols-outlined" style="font-size: 18px;">trending_up</span>
+<span class="font-label-md">+12% from last month</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] opacity-10 rotate-12">local_hospital</span>
+</div>
+<!-- Request History Log -->
+<section class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant flex-1">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md">History</h3>
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+</div>
+<div class="space-y-6">
+<!-- History Item -->
+<div class="relative pl-6 border-l-2 border-outline-variant pb-6">
+<div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-tertiary-container border-2 border-surface-bright"></div>
+<p class="font-label-md text-on-surface-variant">Oct 24, 2023 • 14:20</p>
+<h5 class="font-body-md font-bold mt-1">B- (2 Units) Fulfilled</h5>
+<p class="text-xs text-on-surface-variant mt-1">Delivered to Trauma Center B. Logistics by Alpha Route.</p>
+</div>
+<div class="relative pl-6 border-l-2 border-outline-variant pb-6">
+<div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-tertiary-container border-2 border-surface-bright"></div>
+<p class="font-label-md text-on-surface-variant">Oct 23, 2023 • 09:15</p>
+<h5 class="font-body-md font-bold mt-1">O+ (6 Units) Fulfilled</h5>
+<p class="text-xs text-on-surface-variant mt-1">Bulk order for planned procedures. Success.</p>
+</div>
+<div class="relative pl-6 border-l-2 border-outline-variant">
+<div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-error-container border-2 border-surface-bright"></div>
+<p class="font-label-md text-on-surface-variant">Oct 21, 2023 • 23:45</p>
+<h5 class="font-body-md font-bold mt-1">AB- (1 Unit) Canceled</h5>
+<p class="text-xs text-on-surface-variant mt-1">Request retracted by hospital supervisor.</p>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-outline text-on-surface-variant rounded-lg font-label-md hover:bg-surface-variant transition-colors">DOWNLOAD FULL LOG</button>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Request Modal (Form) -->
+<div class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4" id="requestModal">
+<div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm" onclick="document.getElementById('requestModal').classList.add('hidden')"></div>
+<div class="relative bg-surface-bright w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden border border-outline-variant">
+<div class="p-6 bg-primary text-on-primary flex justify-between items-center">
+<div>
+<h3 class="font-headline-md text-headline-md">New Blood Request</h3>
+<p class="font-label-md opacity-80">ST. JUDE MEDICAL CENTER • ID: 2044-SJ</p>
+</div>
+<button class="hover:bg-on-primary/10 rounded-full p-2 transition-colors" onclick="document.getElementById('requestModal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="p-8 space-y-6">
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md text-on-surface-variant">Blood Group</label>
+<select class="w-full p-3 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface font-body-md">
+<option>O-Negative (O-)</option>
+<option>O-Positive (O+)</option>
+<option>A-Negative (A-)</option>
+<option>A-Positive (A+)</option>
+<option>B-Negative (B-)</option>
+<option>B-Positive (B+)</option>
+<option>AB-Negative (AB-)</option>
+<option>AB-Positive (AB+)</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-surface-variant">Quantity (Units)</label>
+<div class="flex items-center">
+<button class="p-3 border border-outline-variant rounded-l-lg hover:bg-surface-variant transition-colors" type="button">-</button>
+<input class="w-full p-3 border-y border-outline-variant text-center focus:outline-none bg-surface font-body-md" type="number" value="1"/>
+<button class="p-3 border border-outline-variant rounded-r-lg hover:bg-surface-variant transition-colors" type="button">+</button>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-on-surface-variant">Urgency Level</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="flex items-center justify-center gap-3 p-4 border-2 border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container transition-all group has-[:checked]:border-secondary has-[:checked]:bg-secondary/5">
+<input checked="" class="hidden" name="urgency" type="radio"/>
+<span class="material-symbols-outlined text-secondary">schedule</span>
+<span class="font-bold">Normal</span>
+</label>
+<label class="flex items-center justify-center gap-3 p-4 border-2 border-outline-variant rounded-xl cursor-pointer hover:bg-error-container transition-all group has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input class="hidden" name="urgency" type="radio"/>
+<span class="material-symbols-outlined text-primary">emergency</span>
+<span class="font-bold">Emergency</span>
+</label>
+</div>
+</div>
+<div class="space-y-4 pt-4 border-t border-outline-variant">
+<h4 class="font-label-md text-on-surface-variant uppercase tracking-widest">Patient Details</h4>
+<div class="grid grid-cols-2 gap-4">
+<input class="w-full p-3 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/20 bg-surface" placeholder="Patient ID / Name" type="text"/>
+<input class="w-full p-3 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/20 bg-surface" placeholder="Ward / Department" type="text"/>
+</div>
+<textarea class="w-full p-3 rounded-lg border border-outline-variant focus:ring-2 focus:ring-primary/20 bg-surface" placeholder="Clinical justification or special instructions..." rows="3"></textarea>
+</div>
+<div class="flex gap-4 pt-6">
+<button class="flex-1 py-4 border border-outline text-on-surface font-bold rounded-xl hover:bg-surface-variant transition-all" onclick="document.getElementById('requestModal').classList.add('hidden')" type="button">CANCEL</button>
+<button class="flex-1 py-4 bg-primary text-on-primary font-bold rounded-xl hover:bg-primary-container transition-all shadow-lg active:scale-95" type="submit">CONFIRM REQUEST</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Floating Quick Actions (FAB Support) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-on-surface text-surface-bright rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-30 lg:hidden">
+<span class="material-symbols-outlined">add</span>
+</button>
+<script>
+        // Micro-interactions and Modal Logic
+        const modal = document.getElementById('requestModal');
+        
+        // Prevent form submission for demo
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Blood Request Submitted Successfully. Tracking ID: #VLE-7729');
+            modal.classList.add('hidden');
+        });
+
+        // Add some "live" feel to the inventory
+        setInterval(() => {
+            const eta = document.querySelector('.text-\\[10px\\].text-on-surface-variant:last-child');
+            if (eta && eta.textContent.includes('mins')) {
+                let current = parseInt(eta.textContent.split(' ')[1]);
+                if (current > 1) {
+                    eta.textContent = `ETA: ${current - 1} mins`;
+                }
+            }
+        }, 60000);
+    </script>
+</body></html>

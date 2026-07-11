@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Edit Blood Stock | Vital Ledger{% endblock %}
+{% block content %}
+<div class="max-w-2xl mx-auto bg-surface-container-lowest rounded-xl border p-8 shadow-sm">
+  <h2 class="text-2xl font-bold mb-4">Edit Blood Unit</h2>
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="space-y-4">
+      <div>{{ form.blood_group.label(class_='block mb-1') }}{{ form.blood_group(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.units.label(class_='block mb-1') }}{{ form.units(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.expiry_date.label(class_='block mb-1') }}{{ form.expiry_date(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.status.label(class_='block mb-1') }}{{ form.status(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.source.label(class_='block mb-1') }}{{ form.source(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <button type="submit" class="bg-primary text-on-primary px-5 py-3 rounded-lg">{{ form.submit.label.text }}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Vital Ledger{% endblock %}
+{% block content %}
+<div class="flex justify-between items-end mb-8">
+  <div>
+    <h2 class="text-3xl font-bold">Dashboard Overview</h2>
+    <p class="text-on-surface-variant">Real-time vitals for Central Blood Repository</p>
+  </div>
+  <a href="{{ url_for('inventory.add_stock') }}" class="bg-primary text-on-primary px-5 py-3 rounded-lg">Add Stock</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><p class="text-sm uppercase text-on-surface-variant">Total Donors</p><p class="text-4xl font-bold mt-3">{{ total_donors }}</p></div>
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><p class="text-sm uppercase text-on-surface-variant">Blood Units</p><p class="text-4xl font-bold mt-3">{{ total_units }}</p></div>
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><p class="text-sm uppercase text-on-surface-variant">Pending Requests</p><p class="text-4xl font-bold mt-3">{{ pending_requests }}</p></div>
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><p class="text-sm uppercase text-on-surface-variant">Hospitals</p><p class="text-4xl font-bold mt-3">{{ hospitals }}</p></div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm">
+    <h3 class="text-xl font-semibold mb-4">Available Blood Inventory</h3>
+    <div class="space-y-2">
+      {% for unit in blood_units %}
+      <div class="flex justify-between border-b py-2">
+        <span>{{ unit.blood_group }}</span>
+        <span>{{ unit.units }} units</span>
+        <span class="text-sm {{ 'text-tertiary' if unit.status == 'available' else 'text-error' }}">{{ unit.status }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm">
+    <h3 class="text-xl font-semibold mb-4">Recent Donations</h3>
+    <div class="space-y-2">
+      {% for donation in recent_donations %}
+      <div class="flex justify-between border-b py-2">
+        <span>{{ donation.donor.user.full_name }}</span>
+        <span>{{ donation.blood_group }}</span>
+        <span>{{ donation.units }} units</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

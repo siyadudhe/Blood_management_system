@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Register | Vital Ledger{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-surface-container-lowest rounded-xl shadow-sm border p-8">
+  <h2 class="text-2xl font-bold mb-2">Create account</h2>
+  <p class="text-on-surface-variant mb-6">Register as an admin, staff, or donor</p>
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="space-y-4">
+      <div>{{ form.full_name.label(class_='block mb-1') }}{{ form.full_name(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.email.label(class_='block mb-1') }}{{ form.email(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.role.label(class_='block mb-1') }}{{ form.role(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.password.label(class_='block mb-1') }}{{ form.password(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <div>{{ form.confirm_password.label(class_='block mb-1') }}{{ form.confirm_password(class_='w-full rounded-lg border border-outline-variant p-3') }}</div>
+      <button type="submit" class="w-full bg-primary text-on-primary py-3 rounded-lg">{{ form.submit.label.text }}</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

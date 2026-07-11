@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vital Ledger | Blood Bank Admin Dashboard</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9f9",
+                    "inverse-primary": "#ffb3ac",
+                    "on-primary-fixed-variant": "#930010",
+                    "secondary-fixed-dim": "#a5c8ff",
+                    "secondary-container": "#54a0fe",
+                    "on-primary-fixed": "#410003",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f9f9f9",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#ffb3ac",
+                    "surface-tint": "#ba1a20",
+                    "secondary-fixed": "#d4e3ff",
+                    "tertiary-fixed-dim": "#82db7e",
+                    "primary": "#af101a",
+                    "on-primary-container": "#fff2f0",
+                    "on-secondary-fixed-variant": "#004786",
+                    "on-tertiary-fixed": "#002204",
+                    "surface-dim": "#dadada",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#e4beba",
+                    "inverse-surface": "#2f3131",
+                    "secondary": "#005faf",
+                    "outline": "#8f6f6c",
+                    "on-tertiary-fixed-variant": "#005312",
+                    "surface-container-high": "#e8e8e8",
+                    "on-tertiary-container": "#daffd1",
+                    "tertiary-container": "#298030",
+                    "on-surface": "#1a1c1c",
+                    "on-surface-variant": "#5b403d",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#016619",
+                    "primary-container": "#d32f2f",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed": "#001c3a",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f3f3",
+                    "on-background": "#1a1c1c",
+                    "surface-variant": "#e2e2e2",
+                    "inverse-on-surface": "#f1f1f1",
+                    "primary-fixed": "#ffdad6",
+                    "surface": "#f9f9f9",
+                    "surface-container": "#eeeeee",
+                    "on-secondary-container": "#003567",
+                    "tertiary-fixed": "#9df898",
+                    "surface-container-highest": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "sidebar-width": "260px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "data-tabular": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-tabular": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-active-indicator {
+            transition: all 0.2s ease-in-out;
+        }
+        .blood-card-hover:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e4beba; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar (Execution from JSON) -->
+<aside class="fixed h-full w-sidebar-width left-0 top-0 flex flex-col bg-surface-container-lowest shadow-sm border-r border-outline-variant z-50">
+<div class="p-lg flex items-center gap-3">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">bloodtype</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary tracking-tight">Vital Ledger</h1>
+<p class="font-label-md text-label-md text-on-surface-variant opacity-70">Blood Bank Management</p>
+</div>
+</div>
+<nav class="flex-1 mt-md space-y-1">
+<!-- Dashboard Active -->
+<a class="flex items-center gap-3 py-3 px-4 text-primary font-bold border-l-4 border-primary bg-surface-container-high transition-all duration-200 opacity-90" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">bloodtype</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">person_add</span>
+<span class="font-label-md text-label-md">Donors</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">diversity_1</span>
+<span class="font-label-md text-label-md">Recipients</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">local_hospital</span>
+<span class="font-label-md text-label-md">Hospitals</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-on-surface-variant hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
+<span class="font-label-md text-label-md">Reports</span>
+</a>
+</nav>
+<div class="border-t border-outline-variant p-md mb-4">
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Admin Settings</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-error hover:opacity-80 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar (Execution from JSON) -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface-bright border-b border-outline-variant z-40 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-lg">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="pl-10 pr-4 py-1.5 rounded-full border border-outline-variant bg-surface-container-low focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all w-64 font-body-sm text-body-sm" placeholder="Search blood units, donors..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-label-md font-bold text-on-surface">Dr. Sarah Vales</p>
+<p class="text-[10px] uppercase tracking-wider text-on-surface-variant">Chief Administrator</p>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female doctor with a stethoscope in a bright modern medical office, high-key lighting, soft white backgrounds with red accents, representing expertise and modern healthcare leadership in a sterile and clean environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPQ4-kQ7ZheKmrAz8kI_gxAz-SPCdR6IztpOxbR3hduQwKAGMBhr9-D8NA9caKe06WQfiYUQCeun6wvtSSgQZOY2UjHZ8HSEKvtYGUPPLLacLw9r9Drec5Z6rL3l2pZGzJljiswJnwasPo4u0YtdFhMELHbh0cGZCWbcJ_HtxbdYu3wmSihLLL_4jdlBtiJ8xmvNwQkRyQsY8AZYLm3unSpFRL6fJDG4gPUSchq4hH0A8QB9ZObUZkRg"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-sidebar-width pt-16 min-h-screen">
+<div class="p-gutter max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Dashboard Overview</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time vitals for Central Blood Repository</p>
+</div>
+<button class="bg-primary text-white px-lg py-sm rounded-lg font-label-md text-label-md flex items-center gap-2 hover:bg-on-primary-fixed-variant transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                    New Donation
+                </button>
+</div>
+<!-- Stats Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-lg">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm blood-card-hover border border-transparent hover:border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Donors</p>
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-1.5 rounded-lg">person</span>
+</div>
+<div class="mt-4">
+<p class="font-display-lg text-display-lg text-on-surface leading-tight">1,240</p>
+<div class="flex items-center gap-1 text-tertiary mt-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span class="text-[11px] font-bold">+12% this month</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm blood-card-hover border border-transparent hover:border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Recipients</p>
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed p-1.5 rounded-lg">diversity_1</span>
+</div>
+<div class="mt-4">
+<p class="font-display-lg text-display-lg text-on-surface leading-tight">850</p>
+<div class="flex items-center gap-1 text-on-surface-variant mt-1 opacity-60">
+<span class="material-symbols-outlined text-sm">remove</span>
+<span class="text-[11px] font-bold">Stable growth</span>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm blood-card-hover border border-transparent hover:border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Blood Units</p>
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-1.5 rounded-lg">bloodtype</span>
+</div>
+<div class="mt-4">
+<p class="font-display-lg text-display-lg text-on-surface leading-tight">420</p>
+<div class="flex items-center gap-1 text-error mt-1">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="text-[11px] font-bold">Low stock in O-</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm blood-card-hover border border-transparent hover:border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Pending Requests</p>
+<span class="material-symbols-outlined text-on-surface bg-surface-variant p-1.5 rounded-lg">pending_actions</span>
+</div>
+<div class="mt-4">
+<p class="font-display-lg text-display-lg text-on-surface leading-tight">12</p>
+<div class="flex items-center gap-1 text-primary mt-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-[11px] font-bold">Requires urgent review</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- Blood Stock Chart Area -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant relative overflow-hidden">
+<div class="flex justify-between items-center mb-lg relative z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface">Blood Stock by Group</h3>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container-low rounded-full text-[11px] font-bold text-on-surface-variant">Units (ml)</span>
+<span class="px-3 py-1 bg-primary text-white rounded-full text-[11px] font-bold">Live Status</span>
+</div>
+</div>
+<!-- Simplified Visual Chart with CSS Bars -->
+<div class="flex items-end justify-between h-64 gap-4 px-2 mb-4 relative z-10">
+<!-- Chart Bars -->
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg transition-all group-hover:opacity-40" style="height: 60%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 group-hover:brightness-110 transition-all shadow-lg" style="height: 45%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">A+</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg" style="height: 40%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 shadow-lg" style="height: 30%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">A-</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg" style="height: 90%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 shadow-lg" style="height: 85%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">O+</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-error-container opacity-20 rounded-t-lg" style="height: 25%"></div>
+<div class="w-full bg-error rounded-t-lg -mt-1 shadow-lg" style="height: 12%"></div>
+<p class="mt-2 font-label-md text-label-md text-error font-bold italic">O-</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg" style="height: 50%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 shadow-lg" style="height: 40%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">B+</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg" style="height: 30%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 shadow-lg" style="height: 20%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">B-</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg" style="height: 40%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 shadow-lg" style="height: 35%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">AB+</p>
+</div>
+<div class="flex-1 group flex flex-col items-center">
+<div class="w-full bg-primary-container opacity-20 rounded-t-lg" style="height: 20%"></div>
+<div class="w-full bg-primary rounded-t-lg -mt-1 shadow-lg" style="height: 10%"></div>
+<p class="mt-2 font-label-md text-label-md text-on-surface-variant">AB-</p>
+</div>
+</div>
+<!-- Decorative Background Element -->
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary opacity-[0.03] rounded-full blur-3xl"></div>
+</div>
+<!-- Pending Requests Panel -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Pending Requests</h3>
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded text-[10px] font-bold">12 ACTION REQUIRED</span>
+</div>
+<div class="flex-1 overflow-y-auto space-y-3 max-h-[350px] pr-2">
+<!-- Request Item -->
+<div class="p-3 border border-outline-variant rounded-lg bg-surface-bright flex flex-col gap-3 group hover:shadow-md transition-all">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-on-surface border border-outline-variant">O-</div>
+<div>
+<p class="font-body-sm text-body-sm font-bold">St. Mary's General</p>
+<p class="text-[11px] text-on-surface-variant">Emergency Trauma Unit</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[11px] text-error font-bold uppercase">Critical</p>
+<p class="text-[10px] text-on-surface-variant">2m ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1.5 bg-primary text-white font-label-md text-label-md rounded hover:brightness-110 active:scale-95 transition-all">Approve</button>
+<button class="px-3 py-1.5 border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded hover:bg-surface-container-low active:scale-95 transition-all">Reject</button>
+</div>
+</div>
+<!-- Request Item -->
+<div class="p-3 border border-outline-variant rounded-lg bg-surface-bright flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-on-surface border border-outline-variant">A+</div>
+<div>
+<p class="font-body-sm text-body-sm font-bold">City Children's Hospital</p>
+<p class="text-[11px] text-on-surface-variant">Scheduled Surgery</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[11px] text-secondary font-bold uppercase">Normal</p>
+<p class="text-[10px] text-on-surface-variant">45m ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1.5 bg-primary text-white font-label-md text-label-md rounded hover:brightness-110 transition-all">Approve</button>
+<button class="px-3 py-1.5 border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded hover:bg-surface-container-low transition-all">Reject</button>
+</div>
+</div>
+<!-- Request Item -->
+<div class="p-3 border border-outline-variant rounded-lg bg-surface-bright flex flex-col gap-3 opacity-80">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center font-bold text-on-surface border border-outline-variant">B-</div>
+<div>
+<p class="font-body-sm text-body-sm font-bold">Riverside Clinic</p>
+<p class="text-[11px] text-on-surface-variant">Post-Op Recovery</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[11px] text-on-surface-variant font-bold uppercase">Standard</p>
+<p class="text-[10px] text-on-surface-variant">1h ago</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1.5 bg-primary text-white font-label-md text-label-md rounded">Approve</button>
+<button class="px-3 py-1.5 border border-outline-variant text-on-surface-variant font-label-md text-label-md rounded">Reject</button>
+</div>
+</div>
+</div>
+<a class="mt-4 text-center text-primary font-label-md text-label-md hover:underline" href="#">View All Requests</a>
+</div>
+<!-- Recent Donations Table -->
+<div class="col-span-12 bg-surface-container-lowest p-lg rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Recent Donations</h3>
+<div class="flex gap-4">
+<button class="flex items-center gap-1 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-md">filter_list</span> Filter
+                            </button>
+<button class="flex items-center gap-1 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-md">download</span> Export CSV
+                            </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="border-b border-outline-variant">
+<tr>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Donor Name</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Blood Group</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Date</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="py-3 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs">JM</div>
+<p class="font-body-md text-body-md font-medium">James Miller</p>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-3 py-1 bg-surface-container rounded-full font-data-tabular text-data-tabular">O-</span>
+</td>
+<td class="py-4 px-4 font-data-tabular text-data-tabular text-on-surface-variant">Oct 24, 2023 | 09:15 AM</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 bg-tertiary rounded-full"></span>
+<span class="font-label-md text-label-md font-bold">Completed</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-xs">SA</div>
+<p class="font-body-md text-body-md font-medium">Sarah Adams</p>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-3 py-1 bg-surface-container rounded-full font-data-tabular text-data-tabular">A+</span>
+</td>
+<td class="py-4 px-4 font-data-tabular text-data-tabular text-on-surface-variant">Oct 24, 2023 | 08:30 AM</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 bg-tertiary rounded-full"></span>
+<span class="font-label-md text-label-md font-bold">Completed</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-bold text-xs">RK</div>
+<p class="font-body-md text-body-md font-medium">Robert King</p>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-3 py-1 bg-surface-container rounded-full font-data-tabular text-data-tabular">B+</span>
+</td>
+<td class="py-4 px-4 font-data-tabular text-data-tabular text-on-surface-variant">Oct 23, 2023 | 04:45 PM</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 bg-tertiary rounded-full"></span>
+<span class="font-label-md text-label-md font-bold">Completed</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-xs">EL</div>
+<p class="font-body-md text-body-md font-medium">Emily Lopez</p>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-3 py-1 bg-surface-container rounded-full font-data-tabular text-data-tabular">O+</span>
+</td>
+<td class="py-4 px-4 font-data-tabular text-data-tabular text-on-surface-variant">Oct 23, 2023 | 02:20 PM</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-1.5 text-tertiary">
+<span class="w-2 h-2 bg-tertiary rounded-full"></span>
+<span class="font-label-md text-label-md font-bold">Completed</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 flex justify-between items-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Showing 4 of 24 donations</p>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-bright disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 border border-outline-variant rounded-lg hover:bg-surface-bright">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Credits -->
+<footer class="p-lg mt-xl text-center">
+<p class="font-label-md text-label-md text-on-surface-variant opacity-50">© 2023 Vital Ledger Blood Management Systems. All clinical data is encrypted.</p>
+</footer>
+</main>
+<!-- Micro-interaction script -->
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const originalScale = btn.style.transform;
+                btn.style.transform = 'scale(0.96)';
+                setTimeout(() => {
+                    btn.style.transform = originalScale;
+                }, 100);
+            });
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('shadow-md');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('shadow-md');
+        });
+    </script>
+</body></html>

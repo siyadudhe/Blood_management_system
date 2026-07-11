@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Blood Requests | Vital Ledger{% endblock %}
+{% block content %}
+<div class="flex justify-between items-end mb-6">
+  <div><h2 class="text-3xl font-bold">Blood Requests</h2><p class="text-on-surface-variant">Manage request tracking and emergency handling.</p></div>
+  <a href="{{ url_for('request.new_request') }}" class="bg-primary text-on-primary px-5 py-3 rounded-lg">New Request</a>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border shadow-sm overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-surface-container-high"><tr><th class="p-3 text-left">Blood Group</th><th class="p-3 text-left">Units</th><th class="p-3 text-left">Urgency</th><th class="p-3 text-left">Status</th><th class="p-3 text-left">Actions</th></tr></thead>
+    <tbody>
+      {% for req in requests %}
+      <tr class="border-b"><td class="p-3">{{ req.blood_group }}</td><td class="p-3">{{ req.units_required }}</td><td class="p-3">{{ req.urgency }}</td><td class="p-3">{{ req.status }}</td><td class="p-3"><form method="post" class="inline" action="{{ url_for('request.update_status', request_id=req.id, status='approved') }}"><button class="text-tertiary mr-2">Approve</button></form><form method="post" class="inline" action="{{ url_for('request.update_status', request_id=req.id, status='rejected') }}"><button class="text-error">Reject</button></form></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

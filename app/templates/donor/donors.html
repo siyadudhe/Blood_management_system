@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Donors | Vital Ledger{% endblock %}
+{% block content %}
+<div class="flex justify-between items-end mb-6">
+  <div><h2 class="text-3xl font-bold">Donor Management</h2><p class="text-on-surface-variant">Search, filter, and maintain donor records.</p></div>
+  <a href="{{ url_for('donor.add_donor') }}" class="bg-primary text-on-primary px-5 py-3 rounded-lg">Add Donor</a>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border shadow-sm overflow-hidden">
+  <table class="min-w-full text-sm">
+    <thead class="bg-surface-container-high">
+      <tr><th class="p-3 text-left">Name</th><th class="p-3 text-left">Email</th><th class="p-3 text-left">Blood Group</th><th class="p-3 text-left">Eligibility</th><th class="p-3 text-left">Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for donor in donors %}
+      <tr class="border-b"><td class="p-3">{{ donor.user.full_name }}</td><td class="p-3">{{ donor.user.email }}</td><td class="p-3">{{ donor.blood_group }}</td><td class="p-3">{{ donor.eligibility_status }}</td><td class="p-3"><a href="{{ url_for('donor.edit_donor', donor_id=donor.id) }}" class="text-primary mr-3">Edit</a><form class="inline" method="post" action="{{ url_for('donor.delete_donor', donor_id=donor.id) }}"><button class="text-error">Delete</button></form></td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

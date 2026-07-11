@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Reports | Vital Ledger{% endblock %}
+{% block content %}
+<div class="flex justify-between items-end mb-6">
+  <div><h2 class="text-3xl font-bold">Reports</h2><p class="text-on-surface-variant">Export donation and inventory reports.</p></div>
+  <div class="flex gap-3">
+    <a href="{{ url_for('reports.export_pdf') }}" class="bg-primary text-on-primary px-5 py-3 rounded-lg">Export PDF</a>
+    <a href="{{ url_for('reports.export_excel') }}" class="bg-surface-container-high px-5 py-3 rounded-lg">Export Excel</a>
+  </div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><h3 class="font-semibold mb-3">Donations</h3><p>{{ donations|length }} records</p></div>
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><h3 class="font-semibold mb-3">Inventory</h3><p>{{ units|length }} records</p></div>
+  <div class="bg-surface-container-lowest rounded-xl border p-6 shadow-sm"><h3 class="font-semibold mb-3">Requests</h3><p>{{ requests|length }} records</p></div>
+</div>
+{% endblock %}
